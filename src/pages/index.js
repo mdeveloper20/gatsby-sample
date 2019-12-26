@@ -1,13 +1,43 @@
 import React from "react"
-import Header from "../components/header"
-import {Link} from "gatsby"
+import Header from "../components/Header"
+import { graphql } from "gatsby"
+const Layout = ({data})=>{
+  const {edges} = data.allMarkdownRemark
 
-export default () => (
-  <div>
-    <Header >Home Page</Header>
-    <p>What a world.</p>
-    <img src="https://source.unsplash.com/random/400x200" alt="" />
-    <br />
-    <Link to={'/about/'}>About</Link>
+
+  return (<div><Header />
+  <div style={{
+    display:'flex',
+    flexDirection:'column',
+    alignItems:'center',
+    fontFamily:'avenir'
+  }}>
+    {edges.map(edge=>{
+      const {frontmatter} = edge.node
+      return (
+        <div key={frontmatter.path}>{frontmatter.title}</div>
+      )
+    })
+  }
   </div>
-)
+  
+  </div>)
+}
+
+export const query = graphql`
+  query HomepageQuery{
+    allMarkdownRemark(sort:{order:DESC, fields:[frontmatter___date]}) {
+      edges {
+        node{
+          frontmatter{
+            title
+            path
+            date
+          }
+        }
+      }
+    }
+  }
+`
+
+export default Layout;
