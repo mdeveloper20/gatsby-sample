@@ -1,6 +1,6 @@
 import React from "react"
 import Header from "../components/Header"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 const Layout = ({data})=>{
   const {edges} = data.allMarkdownRemark
 
@@ -15,7 +15,9 @@ const Layout = ({data})=>{
     {edges.map(edge=>{
       const {frontmatter} = edge.node
       return (
-        <div key={frontmatter.path}>{frontmatter.title}</div>
+        <div key={frontmatter.path}>
+          <Link to={frontmatter.path}>{frontmatter.title}</Link>
+        </div>
       )
     })
   }
